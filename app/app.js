@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var mysql = require('mysql');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -12,24 +11,10 @@ var app = express();
 
 // Datenbank
 
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "test"
-});
 
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+/*
 
-con.query("SELECT * FROM userprofil", function (err, rows, fields) {
-  if (err) throw err;
-  rows.forEach( (row) => {
-    console.log(`${row.vorname} ${row.nachname}`);
-  });
-});
+*/
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -48,7 +33,30 @@ app.use('/users', usersRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+/*
+app.use('/test', (req, res) => {
+  console.log("DAAAAAAAAAAAAAAAAAAA");
+  con.query("SELECT * FROM userprofil", function (err, rows, fields) {
+    if (err) throw err;
+    rows.forEach( (row) => {
+      console.log(`${row.vorname} ${row.nachname}`);
+    });
+  });
+  res.send("hsdakdasd");
+});
 
+app.post('/test', (req, res) => {
+  console.log("DAAAAAAAAAAAAAAAAAAA");
+  con.query("SELECT * FROM userprofil", function (err, rows, fields) {
+    if (err) throw err;
+    rows.forEach( (row) => {
+      console.log(`${row.vorname} ${row.nachname}`);
+    });
+  });
+  res.send("hsdakdasd");
+});
+
+*/
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development

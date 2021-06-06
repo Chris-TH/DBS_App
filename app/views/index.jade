@@ -1,10 +1,8 @@
 extends layout
 
 block content
-  form.form-control.bg-light
-    d.form-group    
-      label Hallo Welt
-      input(type="text")
-    d.form-group    
-      label Hallo Welt2
-      input(type="text")
+  form(method='POST', action='/test') 
+    .form-group
+      label(for='searchBarInput') Umkreis
+      input#searchBarInput.form-control(name='body', type='text', placeholder='Suchen...')
+      button.btn.btn-primary.btn-sm(type='submit', value="Submit") Suchen

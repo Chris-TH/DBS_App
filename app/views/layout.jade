@@ -6,6 +6,7 @@ html
     link(rel='stylesheet', href='/stylesheets/sidebars.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     script(src='/javascripts/sidebars.js')
+    script(src='/javascripts/main.js')
     script(src='/javascripts/bootstrap.bundle.min.js')
     
   body
@@ -66,31 +67,14 @@ html
             li
               a.nav-link.link-light(href='#')
                 svg.bi.me-2(width='16' height='16')
-                  use(xlink:href='#speedometer2')
-                |           Dashboard
-            li
-              a.nav-link.link-light(href='#')
-                svg.bi.me-2(width='16' height='16')
-                  use(xlink:href='#table')
-                |           Orders
-            li
-              a.nav-link.link-light(href='#')
-                svg.bi.me-2(width='16' height='16')
-                  use(xlink:href='#grid')
-                |           Products
-            li
-              a.nav-link.link-light(href='#')
-                svg.bi.me-2(width='16' height='16')
                   use(xlink:href='#people-circle')
-                |           Customers
+                |           Profil
           hr.bg-light
           .dropdown
             a#dropdownUser2.d-flex.align-items-center.link-light.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
               img.rounded-circle.me-2(src='https://github.com/mdo.png' alt='' width='32' height='32')
-              strong mdo
+              strong Günther
             ul.dropdown-menu.text-small.shadow(aria-labelledby='dropdownUser2')
-              li
-                a.dropdown-item(href='#') New project...
               li
                 a.dropdown-item(href='#') Settings
               li

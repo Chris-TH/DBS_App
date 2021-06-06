@@ -1,7 +1,6 @@
 SET sql_mode = '';
 SET GLOBAL event_scheduler = ON;
 
-
 DROP TABLE IF EXISTS Termin;
 DROP TABLE IF EXISTS Testergebnis;
 DROP TABLE IF EXISTS Testzentrum;
@@ -9,8 +8,6 @@ DROP TABLE IF EXISTS Website;
 DROP TABLE IF EXISTS Api;
 DROP TABLE IF EXISTS Userprofil;
 DROP TABLE IF EXISTS Standort;
-
-
 
 DROP PROCEDURE IF EXISTS proc_testzentrum_suche;
 DROP PROCEDURE IF EXISTS proc_userprofil_anlegen;
@@ -24,10 +21,8 @@ DROP TRIGGER IF EXISTS trg_verfuegbare_testanzahl;
 DROP TRIGGER IF EXISTS trg_terminbuchung_sperren;
 DROP TRIGGER IF EXISTS trg_testzentrum_unique_name;
 
-
 DROP EVENT IF EXISTS eve_testergebnis_upd;
 DROP EVENT IF EXISTS eve_testergebnis_del;
-
 
 CREATE TABLE Userprofil(
   userprofil_id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -41,18 +36,15 @@ CREATE TABLE Userprofil(
   verf_testanzahl INTEGER
 );
 
-
 CREATE TABLE Website(
   website_id INTEGER PRIMARY KEY AUTO_INCREMENT,
   domain VARCHAR(55) NOT NULL
 );
 
-
 CREATE TABLE Api(
    api_id INTEGER PRIMARY KEY AUTO_INCREMENT,
    link VARCHAR(55) NOT NULL
 );
-
 
 CREATE TABLE Testzentrum(
   testzentrum_id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -79,7 +71,6 @@ CREATE TABLE Termin(
   CONSTRAINT userprofil_fk FOREIGN KEY (userprofil_id) REFERENCES Userprofil(userprofil_id)
 );
 
-
 CREATE TABLE Testergebnis(
   testergebnis_id INTEGER PRIMARY KEY AUTO_INCREMENT,
   status VARCHAR(55) NOT NULL,
@@ -92,7 +83,6 @@ CREATE TABLE Testergebnis(
   CONSTRAINT testzentrum_fk2 FOREIGN KEY (testzentrum_id) REFERENCES Testzentrum(testzentrum_id)
 );
 
-
 CREATE TABLE Standort(
   standort_id INTEGER PRIMARY KEY AUTO_INCREMENT,
   land VARCHAR(55),
@@ -101,7 +91,6 @@ CREATE TABLE Standort(
   strasse VARCHAR(55),
   nummer INTEGER
 );
-
 
 CREATE OR REPLACE VIEW v_userprofil AS
 SELECT vorname, nachname, email
@@ -112,10 +101,7 @@ SELECT t.zeit, t.status, u.vorname, u.nachname, tz.name, s.strasse, s.nummer
 FROM Userprofil u, Termin t, Testzentrum tz, Standort s
 WHERE t.status = 'gebucht';
 
-
-
 #### Prozeduren und Funktionen ####
-
 
 # Prozedur zum Anlegen eines Userprofils
 DELIMITER //
@@ -126,7 +112,6 @@ BEGIN
     SELECT ('Profil wurde Erfolgreich angelegt.');
 END //
 DELIMITER ;
-
 
 /* Mit der Prozedur wird anhand der Koordinaten des Users und der übergegebenen maximal Distanz
   alle Teszentren, die diese maximal Distanz zu den Koordianten Users einhalten, ausgegeben*/
@@ -147,7 +132,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 # Testanzahl prüfen, wenn die Testanzahl größer oder gleich 2 ist, wird die Testanmeldung gesperrt. Ansonsten bleibt die Testanmeldung offen.
 DELIMITER //
 CREATE PROCEDURE proc_chk_testanzahl(id INT)
@@ -162,7 +146,6 @@ BEGIN
     END IF;
     END //
 DELIMITER ;
-
 
 DELIMITER //
 CREATE FUNCTION func_userprofil_email_kennung(email VARCHAR(55))
@@ -179,7 +162,6 @@ BEGIN
 END;
 //
 DELIMITER ;
-
 
 # Prozedur zur Verbindung zwischen Testzentrum und API/Website
 DELIMITER //
@@ -210,11 +192,7 @@ BEGIN
 END //
 DELIMITER ;
 
-
-
-
 #### Trigger ####
-
 
 # Der Trigger prueft, ob die Email beim Anlegen eines Userprofils bereits vorhanden ist.
 DELIMITER //
@@ -239,7 +217,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 /*Der Trigger setzt den Gueltigkeitszietraum eines negativ Testergebnis auf ein Zeitraum von einem Tag und
   bei einem positiv Testergebnis soll ein Gueltigkeitszeitraum von 14 Tagen gesetzt werden.
   Bei Eingaben in Feld status, die weder "negativ" noch "positiv" sind, wird eine ERROR Nachricht ausgeworfen */
@@ -259,7 +236,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 # Das Event soll jede 30 Minuten prüfen, ob die Gueltigkeit von negativen Testergebnissen abgelaufen ist und diese auf ungültig setzen
 CREATE EVENT eve_testergebnis_upd
 	ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 30 MINUTE
@@ -271,8 +247,6 @@ CREATE EVENT eve_testergebnis_del
 	ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 30 MINUTE
     DO
 		DELETE FROM Testergebnis WHERE CURRENT_TIMESTAMP > gueltig_bis + INTERVAL '7' DAY;
-
-
 
 # Trigger der den User benachrichtigt wie viele Test er noch offen hat.
 DELIMITER //
@@ -295,7 +269,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 # Trigger der die Anmeldung zum Buchung eines Termines sperrt, wenn die verfuegbare Testanzahl gleich 0 ist
 DELIMITER //
 CREATE TRIGGER trg_terminbuchung_sperren
@@ -310,7 +283,6 @@ BEGIN
    END IF;
 END //
 DELIMITER ;
-
 
 # Trigger sorgt dafür, dass alle Testzentren einzigartig sein müssen
 DELIMITER //
