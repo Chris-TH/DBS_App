@@ -1,3 +1,4 @@
+const { response } = require('express');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
@@ -19,20 +20,25 @@ con.connect(function(err) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');
 });
 
 router.post('/test', function(req, res, next) {
-
     var val = req.body.body
 
     con.query("CALL proc_testzentrum_suche(?,?,?)",[testCoord1,testCoord2,val], function (error, results, fields) {
       if (error) {
         return console.error(error.message);
       }
-      
-      console.log(results);
-    });
+
+      console.log(results[0]);
+      res.render('index', {
+        Zentren: results[0]
+      });  
+  });
+});
+
+
 /*
     con.query(`SELECT * FROM userprofil WHERE vorname = "${val}"`, function (err, rows, fields) {
       if (err) throw err;
@@ -42,6 +48,5 @@ router.post('/test', function(req, res, next) {
     });
     res.render('index', { title: 'Express' });
     */
-});
 
 module.exports = router;

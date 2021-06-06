@@ -6,3 +6,8 @@ block content
       label(for='searchBarInput') Umkreis
       input#searchBarInput.form-control(name='body', type='text', placeholder='Suchen...')
       button.btn.btn-primary.btn-sm(type='submit', value="Submit") Suchen
+
+  ul
+    if Zentren
+      each val in Zentren
+        li= 'Name: ' + val.name + '  Distanz: ' + val.distanz
